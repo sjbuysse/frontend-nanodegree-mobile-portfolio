@@ -6,11 +6,11 @@ module.exports = function(grunt) {
 
     grunt.initConfig({ 
         responsive_images: {
-            target:{
+            pizza:{
                 options: {
                     engine: 'im',
                     sizes: [{
-                            name: 'xtra-small',
+                            name: 'xsmall',
                             width: 100,
                             quality: 80
                           },{
@@ -34,20 +34,39 @@ module.exports = function(grunt) {
                 },
                 files: [{
                     expand: true,
-                    cwd: 'views/images/src',
-                    src: ['*.{jpg,gif,png,jpeg}'],
-                    dest: 'views/images/multiple-dimensions/'
+                    cwd: 'views/src/images/ToBeResized',
+                    src: ['**/*.{png,jpg,gif}'],   // Actual patterns to match
+                    dest: 'views/src/images/ToBeOptimized/'
                 }]
             }
         },
+        copy: {
+          nonResponsiveImages: {
+            expand: true,
+            filter: 'isFile',
+            flatten: true,
+            src: 'views/src/images/*',
+            dest: 'views/src/images/ToBeOptimized'
+          },
+          html: {
+            expand: true,
+            filter: 'isFile',
+            flatten: true,
+            src: 'views/src/*.{html}',
+            dest: 'views/dist/'
+          }
+        },
         responsive_images_extender:{
             target: {
-                options: {},
+                options: {
+                    ignore: ['.grunt-responsive-ignore'],
+                    srcAttribute: 'none'
+                },
                 files: [{
                     expand: true,
-                    src: ["**/*.{html,htm,php}"],
-                    cwd: "views/",
-                    dest: 'dist/'
+                    src: ["*.{html,htm,php}"],
+                    cwd: "views/dist",
+                    dest: 'views/dist'
                 }]
             }
         },
@@ -55,9 +74,9 @@ module.exports = function(grunt) {
             dynamic: {                         // Another target
               files: [{
                 expand: true,                  // Enable dynamic expansion
-                cwd: 'views/images/multiple-dimensions',                   // Src matches are relative to this path
+                cwd: 'views/src/images/ToBeOptimized',                   // Src matches are relative to this path
                 src: ['**/*.{png,jpg,gif}'],   // Actual patterns to match
-                dest: 'views/images/dist/'                  // Destination path prefix
+                dest: 'views/dist/images/'                  // Destination path prefix
               }]
             }
         },
@@ -95,5 +114,5 @@ module.exports = function(grunt) {
         });   
     });
 
-    grunt.registerTask('default', ['responsive_images','newer:imagemin']); 
+    grunt.registerTask('default', ['responsive_images', 'copy','newer:imagemin', 'responsive_images_extender']); 
 };

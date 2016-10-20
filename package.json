@@ -18,6 +18,7 @@
   "homepage": "https://github.com/sjbuysse/frontend-nanodegree-mobile-portfolio#readme",
   "devDependencies": {
     "grunt": "^1.0.1",
+    "grunt-contrib-copy": "^1.0.0",
     "grunt-contrib-imagemin": "^1.0.1",
     "grunt-newer": "^1.2.0",
     "grunt-pagespeed": "^2.0.1",
