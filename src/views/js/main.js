@@ -421,54 +421,29 @@ var resizePizzas = function(size) {
 
   changeSliderLabel(size);
 
-   // Returns the size difference to change a pizza element from one size to another. Called by changePizzaSlices(size).
-  function determineDx (elem, size) {
-    var oldWidth = elem.offsetWidth;
-    var windowWidth = document.querySelector("#randomPizzas").offsetWidth;
-    var oldSize = oldWidth / windowWidth;
-
-    // Changes the slider value to a percent width
-    function sizeSwitcher (size) {
-      switch(size) {
-        case "1":
-          return 0.25;
-        case "2":
-          return 0.3333;
-        case "3":
-          return 0.5;
-        default:
-          console.log("bug in sizeSwitcher");
-      }
+  // Changes the slider value to a percent width
+  function sizeSwitcher (size) {
+    switch(size) {
+      case "1":
+        return 0.25;
+      case "2":
+        return 0.3333;
+      case "3":
+        return 0.5;
+      default:
+        console.log("bug in sizeSwitcher");
     }
-
-    var newSize = sizeSwitcher(size);
-    var dx = (newSize - oldSize) * windowWidth;
-
-    return dx;
   }
 
-    // Changes the slider value to a percent width
-    function sizeSwitcher (size) {
-      switch(size) {
-        case "1":
-          return 0.25;
-        case "2":
-          return 0.3333;
-        case "3":
-          return 0.5;
-        default:
-          console.log("bug in sizeSwitcher");
-      }
-    }
   // Iterates through pizza elements on the page and changes their widths
   function changePizzaSizes(size) {
+    // newSize is a percentage represents the size of a pizza element compared to the container element
     var newSize = sizeSwitcher(size);
+    // windowWidth is the the width of the container element that contains all the pizza elements
     var windowWidth = document.querySelector("#randomPizzas").offsetWidth;
     var newWidth = newSize * windowWidth;
     var randomPizzaContainer = document.querySelectorAll(".randomPizzaContainer");
     for (var i = 0, len = randomPizzaContainer.length; i < len ; i++) {
-      //var dx = determineDx(randomPizzaContainer[i], size);
-      //var newwidth = (randomPizzaContainer[i].offsetWidth + dx) + 'px';
       randomPizzaContainer[i].style.width = newWidth + 'px';
     }
   }
@@ -519,6 +494,8 @@ function updatePositions() {
   window.performance.mark("mark_start_frame");
 
   var items = document.querySelectorAll('.mover');
+  // the phase for each background pizza depends on how far you've scrolled down on the page, 
+  // since this position is the same for each loop, we can calculate this constant outside of the loop
   var constant = (document.body.scrollTop / 1250);
   for (var i = 0; i < items.length; i++) {
     var phase = Math.sin( constant + (i % 5));
