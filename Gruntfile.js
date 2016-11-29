@@ -6,9 +6,10 @@ module.exports = function(grunt) {
 
     grunt.initConfig({ 
         responsive_images: {
-            pizza:{
+            views:{
                 options: {
                     engine: 'im',
+                    //don't upscale an image
                     createNoScaledImage: true,
                     sizes: [{
                             name: 'xsmall',
@@ -45,7 +46,7 @@ module.exports = function(grunt) {
                     dest: 'src/views/images/ToBeOptimized/'
                 }]
             },
-            projectPics:{
+            target:{
                 options: {
                     engine: 'im',
                     createNoScaledImage: true,
@@ -94,8 +95,28 @@ module.exports = function(grunt) {
                 dest: 'dist/'
             }
         },
-        responsive_images_extender:{
+        critical: {
             target: {
+                options: {
+                    base: 'dist/'
+                },
+                // The source file
+                files:[
+                {  src: 'dist/*.html', dest: 'dist/'}
+                ]
+            },
+            views: {
+                options: {
+                    base: 'dist/views/'
+                },
+                // The source file
+                files:[
+                {  src: 'dist/views/*.html', dest: 'dist/views/'}
+                ]
+            }
+        },
+        responsive_images_extender:{
+            views: {
                 options: {
                     ignore: ['.grunt-responsive-ignore'],
                 },
@@ -106,7 +127,7 @@ module.exports = function(grunt) {
                     dest: 'dist/views'
                 }]
             },
-            otherones: {
+            target: {
                 options: {
                     ignore: ['.grunt-responsive-ignore'],
                 },
@@ -119,7 +140,7 @@ module.exports = function(grunt) {
             }
         },
         imagemin: {                          // Task
-            pizza: {                         // Another target
+            views: {                         // optimize all the images for the views pages
               files: [{
                 expand: true,                  // Enable dynamic expansion
                 cwd: 'src/views/images/ToBeOptimized/',                   // Src matches are relative to this path
@@ -170,6 +191,6 @@ module.exports = function(grunt) {
         });   
     });
 
-    grunt.registerTask('default', ['responsive_images', 'copy','newer:imagemin', 'responsive_images_extender']); 
+    grunt.registerTask('default', ['responsive_images', 'copy','newer:imagemin', 'critical', 'responsive_images_extender']); 
     //grunt.registerTask('default', ['copy']); 
 };
