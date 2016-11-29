@@ -91,13 +91,24 @@ module.exports = function(grunt) {
                 expand: true,
                 filter: 'isFile',
                 cwd: 'src/',
-                src: '**/*.{html,css,js}',
+                src: '**/*.{html,js}',
                 dest: 'dist/'
+            }
+        },
+        cssmin: {
+            target: {
+                files: [{
+                  expand: true,
+                  cwd: 'src/',
+                  src: '**/*.css',
+                  dest: 'dist/'
+                }] 
             }
         },
         critical: {
             target: {
                 options: {
+                    minify: 'true',
                     base: 'dist/'
                 },
                 // The source file
@@ -107,6 +118,7 @@ module.exports = function(grunt) {
             },
             views: {
                 options: {
+                    minify: 'true',
                     base: 'dist/views/'
                 },
                 // The source file
@@ -191,6 +203,6 @@ module.exports = function(grunt) {
         });   
     });
 
-    grunt.registerTask('default', ['responsive_images', 'copy','newer:imagemin', 'critical', 'responsive_images_extender']); 
+    grunt.registerTask('default', ['responsive_images', 'copy','newer:imagemin', 'cssmin', 'critical', 'responsive_images_extender']); 
     //grunt.registerTask('default', ['copy']); 
 };
