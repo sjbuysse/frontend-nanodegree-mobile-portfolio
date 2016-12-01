@@ -493,7 +493,7 @@ function updatePositions() {
   frame++;
   window.performance.mark("mark_start_frame");
 
-  var items = document.querySelectorAll('.mover');
+  var items = document.getElementsByClassName('mover');
   // the phase for each background pizza depends on how far you've scrolled down on the page, 
   // since this position is the same for each loop, we can calculate this constant outside of the loop
   var constant = (document.body.scrollTop / 1250);
@@ -513,13 +513,19 @@ function updatePositions() {
 }
 
 // runs updatePositions on scroll
-window.addEventListener('scroll', updatePositions);
+window.addEventListener('scroll', function(){window.requestAnimationFrame(updatePositions)});
 
 // Generates the sliding pizzas when the page loads.
 document.addEventListener('DOMContentLoaded', function() {
-  var cols = 8;
+  //you want a pizza every 256px, so depending on the screen's width, you can get away with more or less columns. 
   var s = 256;
-  for (var i = 0; i < 200; i++) {
+  var windowWidth = window.innerWidth;
+  var cols = Math.ceil((windowWidth / s));
+  //You want a row of pizza's every 256px, so depending on the screen's height, you can get away with more or less rows
+  var windowHeight = window.innerHeight;
+  var rows = Math.ceil((windowHeight/s));
+  var numberOfPizzas = rows * cols;
+  for (var i = 0; i < numberOfPizzas; i++) {
     var elem = document.createElement('img');
     elem.className = 'mover';
     elem.src = "images/pizza.png";
@@ -529,5 +535,5 @@ document.addEventListener('DOMContentLoaded', function() {
     elem.style.top = (Math.floor(i / cols) * s) + 'px';
     document.querySelector("#movingPizzas1").appendChild(elem);
   }
-  updatePositions();
+  window.requestAnimationFrame(updatePositions);
 });
