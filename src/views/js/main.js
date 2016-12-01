@@ -520,15 +520,19 @@ function generateSlidingPizzas(){
   //you want a pizza every 256px, so depending on the screen's width, you can get away with more or less columns. 
   var s = 256;
   var windowWidth = window.innerWidth;
+  console.log("width: " + windowWidth);
   var cols = Math.ceil((windowWidth / s)) + 1;
   //You want a row of pizza's every 256px, so depending on the screen's height, you can get away with more or less rows
   var windowHeight = window.innerHeight;
+  console.log("height: " + windowHeight);
   var rows = Math.ceil((windowHeight/s)) + 1;
   var numberOfPizzas = rows * cols;
-  var currentPizzas = document.getElementsByClassName('mover');
-  for (var i = currentPizzas.length; i < numberOfPizzas; i++) {
+  var movingPizzas = document.querySelector("#movingPizzas1");
+  movingPizzas.innerHTML = "";
+  for (var i = 0; i < numberOfPizzas; i++) {
     var elem = document.createElement('img');
     elem.className = 'mover';
+    elem.classList.add("kaasje-"+i);
     elem.src = "images/pizza.png";
     elem.style.height = "100px";
     elem.style.width = "73.333px";
@@ -536,6 +540,7 @@ function generateSlidingPizzas(){
     elem.style.top = (Math.floor(i / cols) * s) + 'px';
     document.querySelector("#movingPizzas1").appendChild(elem);
   }
+  console.log(movingPizzas);
   window.requestAnimationFrame(updatePositions);
 }
 
