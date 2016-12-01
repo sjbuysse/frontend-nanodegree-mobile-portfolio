@@ -515,8 +515,8 @@ function updatePositions() {
 // runs updatePositions on scroll
 window.addEventListener('scroll', function(){window.requestAnimationFrame(updatePositions)});
 
-// Generates the sliding pizzas when the page loads.
-document.addEventListener('DOMContentLoaded', function() {
+//Generate the sliding pizzas
+function generateSlidingPizzas(){
   //you want a pizza every 256px, so depending on the screen's width, you can get away with more or less columns. 
   var s = 256;
   var windowWidth = window.innerWidth;
@@ -536,4 +536,8 @@ document.addEventListener('DOMContentLoaded', function() {
     document.querySelector("#movingPizzas1").appendChild(elem);
   }
   window.requestAnimationFrame(updatePositions);
-});
+}
+
+// Generates the sliding pizzas when the page loads.
+document.addEventListener('DOMContentLoaded', generateSlidingPizzas);
+window.addEventListener('resize', generateSlidingPizzas);
