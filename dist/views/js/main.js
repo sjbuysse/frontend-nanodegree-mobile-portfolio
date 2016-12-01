@@ -520,12 +520,14 @@ function generateSlidingPizzas(){
   //you want a pizza every 256px, so depending on the screen's width, you can get away with more or less columns. 
   var s = 256;
   var windowWidth = window.innerWidth;
-  var cols = Math.ceil((windowWidth / s));
+  var cols = Math.ceil((windowWidth / s)) + 1;
   //You want a row of pizza's every 256px, so depending on the screen's height, you can get away with more or less rows
   var windowHeight = window.innerHeight;
-  var rows = Math.ceil((windowHeight/s));
+  var rows = Math.ceil((windowHeight/s)) + 1;
   var numberOfPizzas = rows * cols;
-  for (var i = 0; i < numberOfPizzas; i++) {
+  var currentPizzas = document.getElementsByClassName('mover');
+  for (var i = currentPizzas.length; i < numberOfPizzas; i++) {
+    console.log(i);
     var elem = document.createElement('img');
     elem.className = 'mover';
     elem.src = "images/pizza.png";
@@ -540,4 +542,4 @@ function generateSlidingPizzas(){
 
 // Generates the sliding pizzas when the page loads.
 document.addEventListener('DOMContentLoaded', generateSlidingPizzas);
-window.addEventListener('resize', generateSlidingPizzas);
+window.addEventListener('resize', generateSlidingPizzas, true);
