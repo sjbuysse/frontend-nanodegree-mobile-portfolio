@@ -499,7 +499,7 @@ function updatePositions() {
   var constant = (document.body.scrollTop / 1250);
   for (var i = 0; i < items.length; i++) {
     var phase = Math.sin( constant + (i % 5));
-    items[i].style.left = items[i].basicLeft + 100 * phase + 'px';
+    items[i].style.transform = "translateX(" + (100 * phase) + "px)";
   }
 
   // User Timing API to the rescue again. Seriously, it's worth learning.
@@ -520,27 +520,24 @@ function generateSlidingPizzas(){
   //you want a pizza every 256px, so depending on the screen's width, you can get away with more or less columns. 
   var s = 256;
   var windowWidth = window.innerWidth;
-  console.log("width: " + windowWidth);
   var cols = Math.ceil((windowWidth / s)) + 1;
   //You want a row of pizza's every 256px, so depending on the screen's height, you can get away with more or less rows
   var windowHeight = window.innerHeight;
-  console.log("height: " + windowHeight);
   var rows = Math.ceil((windowHeight/s)) + 1;
   var numberOfPizzas = rows * cols;
   var movingPizzas = document.querySelector("#movingPizzas1");
+  //Delete all the sliding pizzas and recreate the appropriate amount of sliding pizza elements from scratch on a resize event or DCL event.
   movingPizzas.innerHTML = "";
   for (var i = 0; i < numberOfPizzas; i++) {
     var elem = document.createElement('img');
     elem.className = 'mover';
-    elem.classList.add("kaasje-"+i);
     elem.src = "images/pizza.png";
     elem.style.height = "100px";
     elem.style.width = "73.333px";
-    elem.basicLeft = (i % cols) * s;
+    elem.style.left = (i % cols) * s + "px";
     elem.style.top = (Math.floor(i / cols) * s) + 'px';
     document.querySelector("#movingPizzas1").appendChild(elem);
   }
-  console.log(movingPizzas);
   window.requestAnimationFrame(updatePositions);
 }
 
